@@ -1,0 +1,79 @@
+<%@ jet 
+	imports="
+		org.talend.core.model.process.INode 
+		org.talend.core.model.process.ElementParameterParser 
+		org.talend.core.model.metadata.IMetadataTable 
+		org.talend.core.model.metadata.IMetadataColumn 
+		org.talend.core.model.process.IConnection
+		org.talend.core.model.process.IConnectionCategory
+		org.talend.core.model.utils.NodeUtil
+		org.talend.designer.codegen.config.CodeGeneratorArgument
+		java.util.List 
+		java.util.ArrayList 
+    	java.util.Map
+	" 
+%>
+<% 
+    CodeGeneratorArgument codeGenArgument = (CodeGeneratorArgument) argument;
+    INode node = (INode) codeGenArgument.getArgument();
+    String cid = node.getUniqueName();
+	String filePath = ElementParameterParser.getValue(node, "__ICS_FILE__");
+    if (filePath == null || filePath.trim().isEmpty()) {
+   		filePath = "null";
+    }
+	@SuppressWarnings("unchecked")
+	List<Map<String, String>> configList = (List<Map<String,String>>) ElementParameterParser.getObjectValue(node, "__COLUMN_CONFIG__");
+	IConnection conn = null;
+	List<? extends IConnection> outConns = NodeUtil.getOutgoingConnections(node, IConnectionCategory.DATA);
+	if (outConns.size() > 0) {
+		conn = outConns.get(0);
+	}
+	List<IMetadataColumn> listColumns = new ArrayList<IMetadataColumn>(); // dummy
+	List<IMetadataTable> metadatas = node.getMetadataList();
+	if (metadatas != null && metadatas.size() > 0) {
+    	IMetadataTable metadata = metadatas.get(0);
+    	if (metadata != null) {
+    		listColumns = metadata.getListColumns();
+		}
+	}
+%>
+	de.jlo.talendcomp.ics.ICSReader <%=cid%> = new de.jlo.talendcomp.ics.ICSReader();
+	<%=cid%>.setIcsFilePath(<%=filePath%>);
+	try {
+		<%=cid%>.setup();
+	} catch (Exception e) {
+		String message = "Setup ics reader failed: " + e.getMessage();
+		globalMap.put("<%=cid%>_ERROR_MESSAGE", message);
+		throw new Exception(message, e);
+	}
+	while (<%=cid%>.next()) {
+<%  if (conn != null) { %>
+<%		for (int i = 0; i < listColumns.size(); i++) {
+			IMetadataColumn mc = listColumns.get(i);
+			Map<String, String> config = configList.get(i);
+			String columnName = mc.getLabel();
+			String fieldName = config.get("EVENT_ATTRIBUTE");
+			boolean allowMissing = mc.isNullable();
+			if (fieldName == null || fieldName.trim().isEmpty()) {
+				fieldName = mc.getLabel();
+			}
+			if (fieldName.equalsIgnoreCase("LAST_MODIFIED")) {
+				fieldName = "LAST-MODIFIED";
+			}
+			String javaClassName = mc.getTalendType().substring(3);
+			if (javaClassName.contains("Date")) { %>
+			<%=conn.getName()%>.<%=columnName%> = <%=cid%>.getPropertyAsDate("<%=fieldName%>", <%=allowMissing%>);
+<%			} else if (javaClassName.contains("Int")) { %>
+			<%=conn.getName()%>.<%=columnName%> = <%=cid%>.getPropertyAsInt("<%=fieldName%>", <%=allowMissing%>);
+<%			} else if (javaClassName.contains("Long")) { %>
+			<%=conn.getName()%>.<%=columnName%> = <%=cid%>.getPropertyAsLong("<%=fieldName%>", <%=allowMissing%>);
+<%			} else if (javaClassName.contains("Double")) { %>
+			<%=conn.getName()%>.<%=columnName%> = <%=cid%>.getPropertyAsDouble("<%=fieldName%>", <%=allowMissing%>);
+<%			} else if (javaClassName.contains("Bool")) { %>
+			<%=conn.getName()%>.<%=columnName%> = <%=cid%>.getPropertyAsBoolean("<%=fieldName%>", <%=allowMissing%>);
+<%			} else { %>
+			<%=conn.getName()%>.<%=columnName%> = <%=cid%>.getPropertyAsString("<%=fieldName%>", <%=allowMissing%>);
+<%			} %>
+<%  	} %>
+<%  } %>
+	
