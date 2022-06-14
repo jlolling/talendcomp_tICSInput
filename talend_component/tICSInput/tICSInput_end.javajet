@@ -10,7 +10,7 @@
     String cid = node.getUniqueName(); %>
     
 	} // close
-	globalMap.put("<%=cid%>_NB_LINE", <%=cid%>getCurrentEntryIndex());
+	globalMap.put("<%=cid%>_NB_LINE", <%=cid%>.getCurrentEntryIndex());
 	globalMap.put("<%=cid%>_NB_TOTAL_ENTRIES", <%=cid%>.getTotalCountEntries());
 	globalMap.put("<%=cid%>_NB_LINE_REJECTED", <%=cid%>.getCountSkippedEntires());
 	
