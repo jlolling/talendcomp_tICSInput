@@ -73,8 +73,12 @@
 			<%=conn.getName()%>.<%=columnName%> = <%=cid%>.getPropertyAsDouble("<%=fieldName%>", <%=allowMissing%>);
 <%			} else if (javaClassName.contains("Bool")) { %>
 			<%=conn.getName()%>.<%=columnName%> = <%=cid%>.getPropertyAsBoolean("<%=fieldName%>", <%=allowMissing%>);
-<%			} else { %>
+<%			} else {
+				if ("NAME".equals(fieldName)) { %>
+			<%=conn.getName()%>.<%=columnName%> = <%=cid%>.getName();
+<%				} else { %>
 			<%=conn.getName()%>.<%=columnName%> = <%=cid%>.getPropertyAsString("<%=fieldName%>", <%=allowMissing%>);
+<%				} %>
 <%			} %>
 <%  	} %>
 <%  } %>

@@ -28,7 +28,7 @@
         <COLUMN NAME="DTEND" TYPE="id_Date" READONLY="true" CUSTOM="true" LENGTH="10" PATTERN="&quot;yyyyMMdd'T'HHmmss&quot;" KEY="false" NULLABLE="true" COMMENT="End of event"/>  
         <COLUMN NAME="LAST_MODIFIED" TYPE="id_Date" READONLY="true" CUSTOM="true" LENGTH="10" PATTERN="&quot;yyyyMMdd'T'HHmmss&quot;" KEY="false" NULLABLE="true" COMMENT="Event last modified"/>  
         <COLUMN NAME="LOCATION" TYPE="id_String" READONLY="true" CUSTOM="true" LENGTH="256" NULLABLE="true" COMMENT="Where the event takes place"/>  
-        <COLUMN NAME="NAME" TYPE="id_String" READONLY="true" CUSTOM="true" LENGTH="256" NULLABLE="true" COMMENT="Summary, Name or Title"/>  
+        <COLUMN NAME="NAME" TYPE="id_String" READONLY="true" CUSTOM="true" LENGTH="256" NULLABLE="true" COMMENT="Use the first not null value from Summary, Name or Title"/>  
         <COLUMN NAME="DESCRIPTION" TYPE="id_String" READONLY="true" CUSTOM="true" LENGTH="1024" NULLABLE="true" COMMENT="Description"/>  
         <COLUMN NAME="EVENTTYPE" TYPE="id_String" READONLY="true" CUSTOM="true" LENGTH="256" NULLABLE="true" COMMENT="Type of the event"/>  
         <COLUMN NAME="STATUS" TYPE="id_String" READONLY="true" CUSTOM="true" LENGTH="10" NULLABLE="true" COMMENT="Status of the event"/>  
