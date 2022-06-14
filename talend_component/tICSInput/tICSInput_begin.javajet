@@ -17,6 +17,7 @@
     CodeGeneratorArgument codeGenArgument = (CodeGeneratorArgument) argument;
     INode node = (INode) codeGenArgument.getArgument();
     String cid = node.getUniqueName();
+	boolean ignoreNoneEventEntries = "true".equals(ElementParameterParser.getValue(node, "__SKIP_NONE_EVENT_ETRIES__"));
 	String filePath = ElementParameterParser.getValue(node, "__ICS_FILE__");
     if (filePath == null || filePath.trim().isEmpty()) {
    		filePath = "null";
@@ -39,6 +40,7 @@
 %>
 	de.jlo.talendcomp.ics.ICSReader <%=cid%> = new de.jlo.talendcomp.ics.ICSReader();
 	<%=cid%>.setIcsFilePath(<%=filePath%>);
+	<%=cid%>.setSkipNoneEventEntries(<%=ignoreNoneEventEntries%>);
 	try {
 		<%=cid%>.setup();
 	} catch (Exception e) {
@@ -53,7 +55,7 @@
 			Map<String, String> config = configList.get(i);
 			String columnName = mc.getLabel();
 			String fieldName = config.get("EVENT_ATTRIBUTE");
-			boolean allowMissing = mc.isNullable();
+			boolean allowMissing = mc.isNullable() || (ignoreNoneEventEntries == false);
 			if (fieldName == null || fieldName.trim().isEmpty()) {
 				fieldName = mc.getLabel();
 			}

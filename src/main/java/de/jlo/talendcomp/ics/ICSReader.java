@@ -192,5 +192,13 @@ public class ICSReader {
 	public int getCountSkippedEntires() {
 		return countSkippedEntires;
 	}
+
+	public boolean isSkipNoneEventEntries() {
+		return skipNoneEventEntries;
+	}
+
+	public void setSkipNoneEventEntries(boolean skipNoneEventEntries) {
+		this.skipNoneEventEntries = skipNoneEventEntries;
+	}
 	
 }
