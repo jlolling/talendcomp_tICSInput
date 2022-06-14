@@ -26,6 +26,7 @@ public class ICSReader {
 	private int currentEntryIndex = 0;
 	private int countSkippedEntires = 0;
 	private boolean skipNoneEventEntries = true;
+	private static final String TS_PATTERN = "yyyyMMdd'T'HHmmss";
 	
 	@SuppressWarnings("unchecked")
 	public void setup() throws Exception {
@@ -125,7 +126,7 @@ public class ICSReader {
 
 	public Date getPropertyAsDate(String key, boolean ignoreMissing) throws Exception {
 		String s = getPropertyAsString(key, ignoreMissing);
-		Date value = GenericDateUtil.parseDate(s, "yyyyMMdd'T'HHmmss");
+		Date value = GenericDateUtil.parseDate(s, TS_PATTERN);
 		return value;
 	}
 

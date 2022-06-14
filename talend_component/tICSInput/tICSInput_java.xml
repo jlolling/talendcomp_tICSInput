@@ -22,10 +22,10 @@
     <PARAMETER NAME="SCHEMA" FIELD="SCHEMA_TYPE" REQUIRED="true" NUM_ROW="10"> 
       <TABLE READONLY="false"> 
         <COLUMN NAME="UID" TYPE="id_String" READONLY="true" CUSTOM="true" LENGTH="64" KEY="true" NULLABLE="false" COMMENT="ID of event"/>  
-        <COLUMN NAME="CREATED" TYPE="id_Date" READONLY="true" CUSTOM="true" LENGTH="10" KEY="false" NULLABLE="true" COMMENT="When this entry is created"/>  
-        <COLUMN NAME="DTSTART" TYPE="id_Date" READONLY="true" CUSTOM="true" LENGTH="10" PATTERN="&quot;yyyyMMdd'T'HHmmss&quot;" KEY="false" NULLABLE="true" COMMENT="Start of event"/>  
-        <COLUMN NAME="DTSTAMP" TYPE="id_Date" READONLY="true" CUSTOM="true" LENGTH="10" PATTERN="&quot;yyyyMMdd'T'HHmmss&quot;" KEY="false" NULLABLE="true" COMMENT="Timestamp in event"/>  
-        <COLUMN NAME="DTEND" TYPE="id_Date" READONLY="true" CUSTOM="true" LENGTH="10" PATTERN="&quot;yyyyMMdd'T'HHmmss&quot;" KEY="false" NULLABLE="true" COMMENT="End of event"/>  
+        <COLUMN NAME="CREATED" TYPE="id_Date" READONLY="true" CUSTOM="true" LENGTH="10" PATTERN="&quot;yyyy-MM-dd HH:mm:ss&quot;" KEY="false" NULLABLE="true" COMMENT="When this entry is created"/>  
+        <COLUMN NAME="DTSTART" TYPE="id_Date" READONLY="true" CUSTOM="true" LENGTH="10" PATTERN="&quot;yyyy-MM-dd HH:mm:ss&quot;" KEY="false" NULLABLE="true" COMMENT="Start of event"/>  
+        <COLUMN NAME="DTSTAMP" TYPE="id_Date" READONLY="true" CUSTOM="true" LENGTH="10" PATTERN="&quot;yyyy-MM-dd HH:mm:ss&quot;" KEY="false" NULLABLE="true" COMMENT="Timestamp in event"/>  
+        <COLUMN NAME="DTEND" TYPE="id_Date" READONLY="true" CUSTOM="true" LENGTH="10" PATTERN="&quot;yyyy-MM-dd HH:mm:ss&quot;" KEY="false" NULLABLE="true" COMMENT="End of event"/>  
         <COLUMN NAME="LAST_MODIFIED" TYPE="id_Date" READONLY="true" CUSTOM="true" LENGTH="10" PATTERN="&quot;yyyyMMdd'T'HHmmss&quot;" KEY="false" NULLABLE="true" COMMENT="Event last modified"/>  
         <COLUMN NAME="LOCATION" TYPE="id_String" READONLY="true" CUSTOM="true" LENGTH="256" NULLABLE="true" COMMENT="Where the event takes place"/>  
         <COLUMN NAME="NAME" TYPE="id_String" READONLY="true" CUSTOM="true" LENGTH="256" NULLABLE="true" COMMENT="Use the first not null value from Summary, Name or Title"/>  
