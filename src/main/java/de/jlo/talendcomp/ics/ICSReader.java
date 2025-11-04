@@ -5,12 +5,14 @@ import java.io.FileInputStream;
 import java.io.StringReader;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.Component;
-import net.fortuna.ical4j.model.ComponentList;
 import net.fortuna.ical4j.model.Property;
+import net.fortuna.ical4j.model.component.CalendarComponent;
 import net.fortuna.ical4j.util.CompatibilityHints;
 
 public class ICSReader {
@@ -19,7 +21,7 @@ public class ICSReader {
 	private String icsContent = null;
 	
 	private Calendar calendar = null;
-	private Iterator<Component> calIterator = null;
+	private Iterator<CalendarComponent> calIterator = null;
 	private Component oneEntry = null;
 	private boolean parseRelaxed = true;
 	private int totalCountEntries = 0;
@@ -28,7 +30,6 @@ public class ICSReader {
 	private boolean skipNoneEventEntries = true;
 	private static final String TS_PATTERN = "yyyyMMdd'T'HHmmss";
 	
-	@SuppressWarnings("unchecked")
 	public void setup() throws Exception {
 		CompatibilityHints.setHintEnabled(CompatibilityHints.KEY_RELAXED_UNFOLDING, parseRelaxed);
 		CompatibilityHints.setHintEnabled(CompatibilityHints.KEY_RELAXED_PARSING, parseRelaxed);
@@ -56,7 +57,7 @@ public class ICSReader {
 		} else {
 			throw new Exception("Neither ics file path nor string content is given. Please provide one of them!");
 		}
-		ComponentList list = calendar.getComponents();
+		List<CalendarComponent> list = calendar.getComponents();
 		totalCountEntries = list.size();
 		calIterator = list.iterator();
 	}
@@ -67,7 +68,7 @@ public class ICSReader {
 			while (oneEntry == null) {
 		    	oneEntry = calIterator.next();
 		    	if (skipNoneEventEntries) {
-			    	Property uid = oneEntry.getProperty("UID");
+			    	Optional<Property> uid = oneEntry.getProperty("UID");
 			    	if (uid == null) {
 			    		oneEntry = null;
 			    		countSkippedEntires++;
@@ -85,7 +86,7 @@ public class ICSReader {
 	
 	public String getAllCurrentPropertiesAsString() {
 		StringBuilder sb = new StringBuilder();
-		for (@SuppressWarnings("unchecked")	Iterator<Property> j = oneEntry.getProperties().iterator(); j.hasNext();) {
+		for (Iterator<Property> j = oneEntry.getProperties().iterator(); j.hasNext();) {
 			Property property = (Property) j.next();
 			sb.append(property.getName());
 			sb.append("=");
@@ -109,7 +110,7 @@ public class ICSReader {
 	public String getPropertyAsString(String key, boolean ignoreMissing) throws Exception {
 		String value = null;
 		Property property = null;
-		for (@SuppressWarnings("unchecked")	Iterator<Property> j = oneEntry.getProperties().iterator(); j.hasNext();) {
+		for (Iterator<Property> j = oneEntry.getProperties().iterator(); j.hasNext();) {
 	        property = (Property) j.next();
 	        if (key.equalsIgnoreCase(property.getName())) {
 	        	value = property.getValue();

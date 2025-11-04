@@ -7,11 +7,12 @@ public class TestReadCalendar {
 
 	@Test
 	public void testRead() throws Exception {
-		String icsFilePath = "/Users/jan/development/testdata/ics/calendar_bankholiday.ics";
+		String icsFilePath = "src/test/resources/calendar_bankholiday.ics";
 		ICSReader r = new ICSReader();
 		r.setIcsFilePath(icsFilePath);
 		r.setup();
 		System.out.println("total: " + r.getTotalCountEntries());
+		System.out.println("skipped: " + r.getCountSkippedEntires());
 		while (r.next()) {
 			System.out.println("################################## " + r.getCurrentEntryIndex());
 			System.out.println(r.getAllCurrentPropertiesAsString());
@@ -22,8 +23,8 @@ public class TestReadCalendar {
 			System.out.println("last-modified:         " + r.getPropertyAsDate("LAST-MODIFIED", true));
 //			System.out.println("Description: " + r.getPropertyAsString("DESCRIPTION", true));
 		}
-//		assertEquals(2, r.getCountSkippedEntires());
-//		assertEquals(236, r.getTotalCountEntries());
+		assertEquals(0, r.getCountSkippedEntires());
+		assertEquals(116, r.getTotalCountEntries());
 	}
 
 }
